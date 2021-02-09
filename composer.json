@@ -4,7 +4,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpunit/phpunit": "^9.5",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
@@ -47,7 +48,6 @@
         "symfony/css-selector": "^5.2",
         "symfony/debug-bundle": "^5.2",
         "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^5.2",
         "symfony/stopwatch": "^5.2",
         "symfony/var-dumper": "^5.2",
         "symfony/web-profiler-bundle": "^5.2"
@@ -57,7 +57,8 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-4": {
