@@ -165,7 +165,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFullName(): ?string
+    public function getFullName(): string
     {
         return sprintf("%s %s", $this->getFirstName(), $this->getLastName());
     }

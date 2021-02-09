@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -27,6 +28,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter a valid email',
                     ])
                 ]
+            ])
+            ->add('email', UniqueEntity::class, [
+
             ])
             ->add('firstName', TextType::class, [
                 'constraints' => [

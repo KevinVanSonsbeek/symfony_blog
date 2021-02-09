@@ -1,4 +1,7 @@
 {
+    "dbrekelmans/bdi": {
+        "version": "0.3"
+    },
     "doctrine/data-fixtures": {
         "version": "1.5.0"
     },
@@ -25,6 +28,9 @@
     },
     "phar-io/version": {
         "version": "3.0.4"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.9.0"
     },
     "phpspec/prophecy": {
         "version": "1.12.2"
@@ -105,6 +111,15 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
+    },
+    "symfony/panther": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "93d9baa582d0a755cc9ef81bc38a921d5fa16973"
+        }
     },
     "theseer/tokenizer": {
         "version": "1.2.0"

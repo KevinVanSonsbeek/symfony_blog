@@ -16,4 +16,8 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+
+<!--  <extensions>-->
+<!--    <extension class="Symfony\Component\Panther\ServerExtension" />-->
+<!--  </extensions>-->
 </phpunit>
