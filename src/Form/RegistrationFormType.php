@@ -29,9 +29,6 @@ class RegistrationFormType extends AbstractType
                     ])
                 ]
             ])
-            ->add('email', UniqueEntity::class, [
-
-            ])
             ->add('firstName', TextType::class, [
                 'constraints' => [
                     new NotBlank([
