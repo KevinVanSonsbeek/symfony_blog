@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Traits\HasTimestampsTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -161,6 +163,11 @@ class User implements UserInterface
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return sprintf("%s %s", $this->getFirstName(), $this->getLastName());
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
