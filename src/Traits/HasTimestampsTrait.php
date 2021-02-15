@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Traits;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 trait HasTimestampsTrait
@@ -11,7 +13,7 @@ trait HasTimestampsTrait
      */
     public function prePersistSetTimestamps(): void
     {
-        $dateTime = new \DateTime('now');
+        $dateTime = new DateTime('now');
         $this->setCreatedAt($dateTime);
         $this->setUpdatedAt($dateTime);
     }
@@ -21,6 +23,6 @@ trait HasTimestampsTrait
      */
     public function preUpdateSetTimestamps(): void
     {
-        $this->setUpdatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(new DateTime('now'));
     }
 }

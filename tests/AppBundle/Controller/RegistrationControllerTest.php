@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Tests\AppBundle\Controller;
 
@@ -11,6 +12,6 @@ class RegistrationControllerTest extends PantherTestCase
         $client = static::createPantherClient();
         $client->request('GET', '/register');
 
-        $this->assertPageTitleContains('Register');
+        static::assertPageTitleContains('Register');
     }
 }
