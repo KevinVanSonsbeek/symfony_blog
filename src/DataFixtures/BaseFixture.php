@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\DataFixtures;
 
@@ -6,16 +7,15 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use LogicException;
 
 abstract class BaseFixture extends Fixture
 {
-    /** @var ObjectManager */
-    private $manager;
+    private ObjectManager $manager;
 
-    /** @var Generator */
-    protected $faker;
+    protected Generator $faker;
 
-    private $referencesIndex = [];
+    private array $referencesIndex = [];
 
     abstract protected function loadData(ObjectManager $manager);
 
@@ -43,13 +43,13 @@ abstract class BaseFixture extends Fixture
      *                            to fetch only from this specific group.
      * @param callable $factory
      */
-    protected function createMany(int $count, string $groupName, callable $factory)
+    protected function createMany(int $count, string $groupName, callable $factory): void
     {
         for ($i = 0; $i < $count; $i++) {
             $entity = $factory($i);
 
             if (null === $entity) {
-                throw new \LogicException('Did you forget to return the entity object from your callback to BaseFixture::createMany()?');
+                throw new LogicException('Did you forget to return the entity object from your callback to BaseFixture::createMany()?');
             }
 
             $this->manager->persist($entity);
@@ -59,7 +59,8 @@ abstract class BaseFixture extends Fixture
         }
     }
 
-    protected function getRandomReference(string $groupName) {
+    protected function getRandomReference(string $groupName): object
+    {
         if (!isset($this->referencesIndex[$groupName])) {
             $this->referencesIndex[$groupName] = [];
 
