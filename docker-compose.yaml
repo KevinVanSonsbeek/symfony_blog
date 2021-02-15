@@ -27,11 +27,12 @@ services:
         volumes:
             - ../src:/var/www
 
+#todo: Figure out why the project is not being mounted into the nginx service container, causing it to be missing from the /var/www folder
     nginx:
         build:
             context: ./.docker/nginx
         volumes:
-            - ../src:/var/www
+            - ./src:/var/www
             - ./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./.docker/nginx/sites/:/etc/nginx/sites-available
             - ./.docker/nginx/conf.d/:/etc/nginx/conf.d
