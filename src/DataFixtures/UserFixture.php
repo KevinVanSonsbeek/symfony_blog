@@ -15,6 +15,7 @@ use function Safe\sprintf;
  * Class UserFixture
  *
  * @package App\DataFixtures
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class UserFixture extends Fixture
 {
