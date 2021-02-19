@@ -41,5 +41,9 @@ jobs:
     needs: ['build']
     
     steps:
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --dev --prefer-dist --no-progress --no-suggest
+    
       - name: Run PHPUnit
         run: vendor/bin/phpunit
