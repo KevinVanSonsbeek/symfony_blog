@@ -10,51 +10,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: php-actions/composer@v5
+      - uses: actions/checkout@v2
 
-#     - name: Cache Composer packages
-#       id: composer-cache
-#       uses: actions/cache@v2
-#       with:
-#         path: vendor
-#         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-#         restore-keys: |
-#           ${{ runner.os }}-php-
+      # Composer
+      -   name: Validate composer.json and composer.lock
+          run: composer validate
 
-#     - name: Install dependencies
-#       if: steps.composer-cache.outputs.cache-hit != 'true'
-#       run: composer install --prefer-dist --no-progress --no-suggest
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+      -   name: Install Composer dependencies
+          run: composer install --dev --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
 
-#   phpunit:
-  
-#     runs-on: ubuntu-latest
-#     needs: ['build']
 
-#     steps:
-#     - uses: actions/checkout@v2
+      # https://github.com/chekalsky/phpcs-action (community)
+      - name: Check PSR12 code style (PHP_CodeSniffer)
+        uses: chekalsky/phpcs-action@v1.2.0
+        with:
+          enable_warnings: true
+          installed_paths: '${{ github.workspace }}/vendor/squizlabs/php_codesniffer'
+          phpcs_bin_path: './bin/phpcs'
 
-#     - name: Cache Composer packages
-#       id: composer-cache
-#       uses: actions/cache@v2
-#       with:
-#         path: vendor
-#         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-#         restore-keys: |
-#           ${{ runner.os }}-php-
-#     - name: Install dependencies
-#       if: steps.composer-cache.outputs.cache-hit != 'true'
-#       run: composer install --prefer-dist --no-progress --no-suggest
-      
-#     - name: Chrome Driver
-#       run: vendor/bin/bdi detect drivers
-    
-#     - name: Run PHPUnit
-#       uses: php-actions/phpunit@v2
+      # https://github.com/phpstan/phpstan
+      - name: Analyse PHP Code (PHPStan)
+        run: vendor/bin/phpstan analyse
+
+      - name: Analyse PHP code (psalm)
+        run: bin/psalm
+
+      # Tests
+      - name: Run unit and functional tests
+        run: |
+          php bin/phpunit --stop-on-failure
