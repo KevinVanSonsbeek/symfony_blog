@@ -12,9 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
@@ -38,12 +35,10 @@ jobs:
   phpunit:
   
     runs-on: ubuntu-latest
+    needs: ['build']
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Validate composer.json and composer.lock
-      run: composer validate
 
     - name: Cache Composer packages
       id: composer-cache
@@ -57,6 +52,8 @@ jobs:
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest
       
+    - name: Chrome Driver
+      run: vendor/bin/bdi detect drivers
     
     - name: Run PHPUnit
       uses: php-actions/phpunit@v2
