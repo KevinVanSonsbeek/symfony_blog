@@ -61,4 +61,4 @@ jobs:
           run: composer install --dev --prefer-dist --no-progress --no-suggest
 
       - name: Run PHPUnit
-        run: php vendor/bin/phpunit
+        run: php bin/phpunit
