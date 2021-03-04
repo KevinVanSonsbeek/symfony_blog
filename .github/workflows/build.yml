@@ -1,7 +1,10 @@
+name: Build
+
 on:
   push:
     branches: [master]
-    pull_request: [master]
+  pull_request: 
+    branches: [master]
         
 jobs:
     code_analysis:
@@ -14,21 +17,11 @@ jobs:
                     php-version: 7.4
                     extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
                     coverage: pcov
-
             -   uses: actions/checkout@v1
-
-            -   name: Install dependencies
-                run: |
-                    composer clear-cache
-                    composer validate
-                    composer install --prefer-dist --no-progress --no-suggest
+            -   uses: ramsey/composer-install@v1
             -   name: PHP Stan
-                run: |
-                    vendor/bin/phpstan analyze
+                run: vendor/bin/phpstan analyze
             -   name: Psalm
-                run: |
-                    vendor/bin/psalm
+                run: vendor/bin/psalm
             -   name: PHPUnit
-                run: |
-                    vendor/bin/phpunit
-          echo test, and deploy your project.
+                run: vendor/bin/phpunit
