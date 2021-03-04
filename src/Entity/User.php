@@ -5,19 +5,25 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Traits\HasTimestampsTrait;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use function Safe\sprintf;
+use Safe\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ *
+ * @psalm-suppress MissingConstructor
  */
 class User implements UserInterface
 {
     use HasTimestampsTrait;
+
+    // Todo: Split up the User into an Entity and a Form Model/Entity
 
     /**
      * @ORM\Id
@@ -33,6 +39,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @var list<string>
      */
     private array $roles = [];
 
@@ -55,12 +62,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?DateTimeInterface $created_at;
+    private ?DateTime $created_at;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?DateTimeInterface $updated_at;
+    private ?DateTime $updated_at;
 
     public function getId(): ?int
     {
@@ -101,6 +108,9 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -113,7 +123,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -137,7 +147,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -172,24 +182,24 @@ class User implements UserInterface
         return sprintf("%s %s", $this->getFirstName(), $this->getLastName());
     }
 
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): ?DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(DateTimeInterface $created_at): self
+    public function setCreatedAt(DateTime $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updated_at): self
+    public function setUpdatedAt(DateTime $updated_at): self
     {
         $this->updated_at = $updated_at;
 
