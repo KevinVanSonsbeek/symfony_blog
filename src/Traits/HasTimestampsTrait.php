@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use DateTime;
+use Safe\DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 trait HasTimestampsTrait
