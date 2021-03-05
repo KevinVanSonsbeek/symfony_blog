@@ -28,12 +28,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public const LOGIN_ROUTE = 'app_login';
 
     private EntityManagerInterface $entityManager;
+
     private UrlGeneratorInterface $urlGenerator;
+
     private CsrfTokenManagerInterface $csrfTokenManager;
+
     private UserPasswordEncoderInterface $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -65,11 +72,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      * @param mixed                 $credentials
      * @param UserProviderInterface $userProvider
      *
+     * @psalm-suppress UndefinedClass
+     * Supress psalms UndefinedClass error, as for some reason the entityManager can't find the UserRepository, while it does exist.
+     *
      * @return UserInterface|null
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        /** @var array<mixed> $credentials */
+        $token = new CsrfToken('authenticate', (string) $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
@@ -87,6 +98,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        /** @var array<string, string> $credentials */
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -95,6 +107,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function getPassword($credentials): ?string
     {
+        /** @var array<string, string> $credentials */
         return $credentials['password'];
     }
 
