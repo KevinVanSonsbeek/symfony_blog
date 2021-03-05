@@ -20,8 +20,8 @@ jobs:
             -   uses: actions/checkout@v1
             -   uses: ramsey/composer-install@v1
             -   name: PHP Stan
-                run: vendor/bin/phpstan analyze
+                run: bin/phpstan analyze
             -   name: Psalm
-                run: vendor/bin/psalm
+                run: bin/psalm
             -   name: PHPUnit
-                run: vendor/bin/phpunit
+                run: bin/phpunit
