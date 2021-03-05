@@ -21,6 +21,7 @@ jobs:
             -   uses: ramsey/composer-install@v1
 
     php_stan:
+        needs: build
         name: 'PHP Stan'
         runs-on: ubuntu-latest
         steps:
@@ -36,6 +37,7 @@ jobs:
                 run: bin/phpstan analyze
 
     psalm:
+        needs: build
         name: 'Psalm'
         runs-on: ubuntu-latest
         steps:
@@ -51,6 +53,7 @@ jobs:
                 run: bin/psalm
 
     php_unit:
+        needs: [ build, php_stan, psalm ]
         name: 'PHP Unit'
         runs-on: ubuntu-latest
         steps:
